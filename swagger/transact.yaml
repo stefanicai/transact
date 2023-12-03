@@ -1,0 +1,132 @@
+openapi: 3.0.2
+info:
+  title: Transact - OpenAPI 3.0
+  version: 1.0.0
+servers:
+  - url: localhost:8080
+tags:
+  - name: transact
+    description: Transactions
+paths:
+  /create:
+    post:
+      summary: Create a new transaction
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTransactionRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateTransactionResponse'
+        default:
+          description: General Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /get:
+    get:
+      summary: get a new transaction in a specific currency
+      operationId: get
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTransactionRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTransactionResponse'
+        default:
+          description: General Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    CreateTransactionRequest:
+      type: object
+      properties:
+        description:
+          type: string
+          example: "food bill"
+        amount:
+          type: string
+          description: Amount of the transaction
+          example: "10.50"
+    CreateTransactionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+        date:
+          type: string
+          format: date-time
+          example: "2023-12-03T10:51:12+11:00"
+    GetTransactionRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id in uuid format
+          example: "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+        currency:
+          type: string
+          example: "aud"
+    GetTransactionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id in uuid format
+          example: "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+        description:
+          type: string
+          example: "food bill"
+        amountUSD:
+          type: string
+          description: Amount of the transaction in USD
+          example: "10.50"
+        date:
+          type: string
+          format: date-time
+          example: "2023-12-03T10:51:12+11:00"
+        amount:
+          description: Amount in the requested currency
+          type: string
+          example: "10.50"
+    Error:
+      description: Represents error object
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int64
+        message:
+          type: string
+      required:
+        - code
+        - message
+    Nothing:
+      type: string
+      example: '<html>HTML text</html>'
+  requestBodies:
+    Transaction:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateTransactionRequest'
+      description: Transaction object that needs to be added to the store
