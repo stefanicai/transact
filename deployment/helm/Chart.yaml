@@ -1,0 +1,6 @@
+apiVersion: v2
+name: transact
+description: Transact helm chart
+type: application
+version: 0.7.20
+appVersion: 1.0.0

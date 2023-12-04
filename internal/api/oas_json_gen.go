@@ -35,11 +35,18 @@ func (s *CreateTransactionRequest) encodeFields(e *jx.Encoder) {
 			s.Amount.Encode(e)
 		}
 	}
+	{
+		if s.Date.Set {
+			e.FieldStart("date")
+			s.Date.Encode(e)
+		}
+	}
 }
 
-var jsonFieldsNameOfCreateTransactionRequest = [2]string{
+var jsonFieldsNameOfCreateTransactionRequest = [3]string{
 	0: "description",
 	1: "amount",
+	2: "date",
 }
 
 // Decode decodes CreateTransactionRequest from json.
@@ -69,6 +76,16 @@ func (s *CreateTransactionRequest) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"amount\"")
+			}
+		case "date":
+			if err := func() error {
+				s.Date.Reset()
+				if err := s.Date.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"date\"")
 			}
 		default:
 			return d.Skip()
@@ -109,17 +126,10 @@ func (s *CreateTransactionResponse) encodeFields(e *jx.Encoder) {
 			s.ID.Encode(e)
 		}
 	}
-	{
-		if s.Date.Set {
-			e.FieldStart("date")
-			s.Date.Encode(e, json.EncodeDateTime)
-		}
-	}
 }
 
-var jsonFieldsNameOfCreateTransactionResponse = [2]string{
+var jsonFieldsNameOfCreateTransactionResponse = [1]string{
 	0: "id",
-	1: "date",
 }
 
 // Decode decodes CreateTransactionResponse from json.
@@ -139,16 +149,6 @@ func (s *CreateTransactionResponse) Decode(d *jx.Decoder) error {
 				return nil
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"id\"")
-			}
-		case "date":
-			if err := func() error {
-				s.Date.Reset()
-				if err := s.Date.Decode(d, json.DecodeDateTime); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"date\"")
 			}
 		default:
 			return d.Skip()
@@ -303,16 +303,16 @@ func (s *GetTransactionRequest) encodeFields(e *jx.Encoder) {
 		}
 	}
 	{
-		if s.Currency.Set {
-			e.FieldStart("currency")
-			s.Currency.Encode(e)
+		if s.Country.Set {
+			e.FieldStart("country")
+			s.Country.Encode(e)
 		}
 	}
 }
 
 var jsonFieldsNameOfGetTransactionRequest = [2]string{
 	0: "id",
-	1: "currency",
+	1: "country",
 }
 
 // Decode decodes GetTransactionRequest from json.
@@ -333,15 +333,15 @@ func (s *GetTransactionRequest) Decode(d *jx.Decoder) error {
 			}(); err != nil {
 				return errors.Wrap(err, "decode field \"id\"")
 			}
-		case "currency":
+		case "country":
 			if err := func() error {
-				s.Currency.Reset()
-				if err := s.Currency.Decode(d); err != nil {
+				s.Country.Reset()
+				if err := s.Country.Decode(d); err != nil {
 					return err
 				}
 				return nil
 			}(); err != nil {
-				return errors.Wrap(err, "decode field \"currency\"")
+				return errors.Wrap(err, "decode field \"country\"")
 			}
 		default:
 			return d.Skip()

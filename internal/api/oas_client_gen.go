@@ -30,7 +30,7 @@ type Invoker interface {
 	Create(ctx context.Context, request *CreateTransactionRequest) (*CreateTransactionResponse, error)
 	// Get invokes get operation.
 	//
-	// Get a new transaction in a specific currency.
+	// Get a new transaction in a specific country's currency.
 	//
 	// GET /get
 	Get(ctx context.Context, request *GetTransactionRequest) (*GetTransactionResponse, error)
@@ -165,7 +165,7 @@ func (c *Client) sendCreate(ctx context.Context, request *CreateTransactionReque
 
 // Get invokes get operation.
 //
-// Get a new transaction in a specific currency.
+// Get a new transaction in a specific country's currency.
 //
 // GET /get
 func (c *Client) Get(ctx context.Context, request *GetTransactionRequest) (*GetTransactionResponse, error) {

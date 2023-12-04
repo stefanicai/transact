@@ -221,7 +221,7 @@ func (s *Server) FindPath(method string, u *url.URL) (r Route, _ bool) {
 					case "GET":
 						// Leaf: Get
 						r.name = "Get"
-						r.summary = "get a new transaction in a specific currency"
+						r.summary = "get a new transaction in a specific country's currency"
 						r.operationID = "get"
 						r.pathPattern = "/get"
 						r.args = args

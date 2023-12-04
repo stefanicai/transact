@@ -16,7 +16,7 @@ type Handler interface {
 	Create(ctx context.Context, req *CreateTransactionRequest) (*CreateTransactionResponse, error)
 	// Get implements get operation.
 	//
-	// Get a new transaction in a specific currency.
+	// Get a new transaction in a specific country's currency.
 	//
 	// GET /get
 	Get(ctx context.Context, req *GetTransactionRequest) (*GetTransactionResponse, error)

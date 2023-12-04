@@ -139,7 +139,7 @@ func (s *Server) handleCreateRequest(args [0]string, argsEscaped bool, w http.Re
 
 // handleGetRequest handles get operation.
 //
-// Get a new transaction in a specific currency.
+// Get a new transaction in a specific country's currency.
 //
 // GET /get
 func (s *Server) handleGetRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {
@@ -200,7 +200,7 @@ func (s *Server) handleGetRequest(args [0]string, argsEscaped bool, w http.Respo
 		mreq := middleware.Request{
 			Context:          ctx,
 			OperationName:    "Get",
-			OperationSummary: "get a new transaction in a specific currency",
+			OperationSummary: "get a new transaction in a specific country's currency",
 			OperationID:      "get",
 			Body:             request,
 			Params:           middleware.Parameters{},

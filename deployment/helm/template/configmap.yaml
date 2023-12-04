@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.app.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.app.name }}
+immutable: true
+data:
+  config-{{.Values.env}}.yaml: |-
+{{ .Files.Get (printf "config-%s.yaml" .Values.env) | indent 4 }}

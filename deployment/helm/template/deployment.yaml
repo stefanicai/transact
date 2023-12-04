@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.name }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.app.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+    spec:
+      containers:
+        - name: credit
+          image: {{.imageURL}}:{{ .Values.tag }}
+          imagePullPolicy: Always
+          args: ["-config", "/app/config-{{.Values.env}}.yaml"]
+          volumeMounts:
+            - name: configuration-configmap
+              mountPath: /app
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+      volumes:
+        - name: configuration-configmap
+          configMap:
+            name: {{ .Values.app.name }}

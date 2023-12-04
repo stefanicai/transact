@@ -24,7 +24,7 @@ func (UnimplementedHandler) Create(ctx context.Context, req *CreateTransactionRe
 
 // Get implements get operation.
 //
-// Get a new transaction in a specific currency.
+// Get a new transaction in a specific country's currency.
 //
 // GET /get
 func (UnimplementedHandler) Get(ctx context.Context, req *GetTransactionRequest) (r *GetTransactionResponse, _ error) {

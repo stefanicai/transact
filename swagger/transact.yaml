@@ -33,7 +33,7 @@ paths:
                 $ref: "#/components/schemas/Error"
   /get:
     get:
-      summary: get a new transaction in a specific currency
+      summary: get a new transaction in a specific country's currency
       operationId: get
       requestBody:
         content:
@@ -66,16 +66,15 @@ components:
           type: string
           description: Amount of the transaction
           example: "10.50"
+        date:
+          type: string
+          example: "2023-01-30 or with time 2023-12-03T10:51:12+11:00"
     CreateTransactionResponse:
       type: object
       properties:
         id:
           type: string
           example: "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
-        date:
-          type: string
-          format: date-time
-          example: "2023-12-03T10:51:12+11:00"
     GetTransactionRequest:
       type: object
       properties:
@@ -83,9 +82,9 @@ components:
           type: string
           description: id in uuid format
           example: "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
-        currency:
+        country:
           type: string
-          example: "aud"
+          example: "australia"
     GetTransactionResponse:
       type: object
       properties:
@@ -105,7 +104,7 @@ components:
           format: date-time
           example: "2023-12-03T10:51:12+11:00"
         amount:
-          description: Amount in the requested currency
+          description: Amount in the currency of the specified country
           type: string
           example: "10.50"
     Error:

@@ -7,9 +7,10 @@ import (
 	"github.com/stefanicai/transact/internal/convert"
 	"github.com/stefanicai/transact/internal/forex"
 	"github.com/stefanicai/transact/internal/persistence"
-	"github.com/stefanicai/transact/internal/validate"
-	"golang.org/x/text/currency"
-	"time"
+)
+
+const (
+	amountPrecision = 2
 )
 
 type Service interface {
@@ -28,34 +29,27 @@ func (t *service) Create(ctx context.Context, req *api.CreateTransactionRequest)
 		return nil, err
 	}
 
-	// add missing fields
+	// generate ID
 	tr.ID = uuid.NewString()
-	tr.Date = time.Now() //use time of the container
 
-	err = t.dao.Store(tr)
+	err = t.dao.Store(ctx, tr)
 	if err != nil {
 		return nil, err
 	}
 
-	resp := &api.CreateTransactionResponse{}
+	var resp api.CreateTransactionResponse
 	resp.ID.SetTo(tr.ID)
-	resp.Date.SetTo(tr.Date)
 
-	return resp, nil
+	return &resp, nil
 }
 
 func (t *service) Get(ctx context.Context, req *api.GetTransactionRequest) (*api.GetTransactionResponse, error) {
-	tr, err := t.dao.Get(req.ID.Value)
+	tr, err := t.dao.Get(ctx, req.ID.Value)
 	if err != nil {
 		return nil, err
 	}
 
-	unit, err := currency.ParseISO(req.GetCurrency().Value)
-	if err != nil {
-		return nil, err
-	}
-
-	amountInCurrency, err := t.forexService.Convert(unit, tr.AmountInUSD)
+	amountInCurrency, err := t.forexService.Convert(req.Country.Value, tr.AmountInUSD)
 	if err != nil {
 		return nil, err
 	}
@@ -63,9 +57,9 @@ func (t *service) Get(ctx context.Context, req *api.GetTransactionRequest) (*api
 	// build response message
 	var resp api.GetTransactionResponse
 	resp.ID.SetTo(tr.ID)
-	resp.Amount.SetTo(amountInCurrency.FloatString(validate.AmountPrecision))
+	resp.Amount.SetTo(amountInCurrency.FloatString(amountPrecision))
 	resp.Description.SetTo(tr.Description)
-	resp.AmountUSD.SetTo(tr.AmountInUSD.FloatString(validate.AmountPrecision))
+	resp.AmountUSD.SetTo(tr.AmountInUSD.FloatString(amountPrecision))
 
 	return &resp, nil
 }

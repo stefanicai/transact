@@ -16,6 +16,7 @@ type CreateTransactionRequest struct {
 	Description OptString `json:"description"`
 	// Amount of the transaction.
 	Amount OptString `json:"amount"`
+	Date   OptString `json:"date"`
 }
 
 // GetDescription returns the value of Description.
@@ -28,6 +29,11 @@ func (s *CreateTransactionRequest) GetAmount() OptString {
 	return s.Amount
 }
 
+// GetDate returns the value of Date.
+func (s *CreateTransactionRequest) GetDate() OptString {
+	return s.Date
+}
+
 // SetDescription sets the value of Description.
 func (s *CreateTransactionRequest) SetDescription(val OptString) {
 	s.Description = val
@@ -38,10 +44,14 @@ func (s *CreateTransactionRequest) SetAmount(val OptString) {
 	s.Amount = val
 }
 
+// SetDate sets the value of Date.
+func (s *CreateTransactionRequest) SetDate(val OptString) {
+	s.Date = val
+}
+
 // Ref: #/components/schemas/CreateTransactionResponse
 type CreateTransactionResponse struct {
-	ID   OptString   `json:"id"`
-	Date OptDateTime `json:"date"`
+	ID OptString `json:"id"`
 }
 
 // GetID returns the value of ID.
@@ -49,19 +59,9 @@ func (s *CreateTransactionResponse) GetID() OptString {
 	return s.ID
 }
 
-// GetDate returns the value of Date.
-func (s *CreateTransactionResponse) GetDate() OptDateTime {
-	return s.Date
-}
-
 // SetID sets the value of ID.
 func (s *CreateTransactionResponse) SetID(val OptString) {
 	s.ID = val
-}
-
-// SetDate sets the value of Date.
-func (s *CreateTransactionResponse) SetDate(val OptDateTime) {
-	s.Date = val
 }
 
 // Represents error object.
@@ -120,8 +120,8 @@ func (s *ErrorStatusCode) SetResponse(val Error) {
 // Ref: #/components/schemas/GetTransactionRequest
 type GetTransactionRequest struct {
 	// Id in uuid format.
-	ID       OptString `json:"id"`
-	Currency OptString `json:"currency"`
+	ID      OptString `json:"id"`
+	Country OptString `json:"country"`
 }
 
 // GetID returns the value of ID.
@@ -129,9 +129,9 @@ func (s *GetTransactionRequest) GetID() OptString {
 	return s.ID
 }
 
-// GetCurrency returns the value of Currency.
-func (s *GetTransactionRequest) GetCurrency() OptString {
-	return s.Currency
+// GetCountry returns the value of Country.
+func (s *GetTransactionRequest) GetCountry() OptString {
+	return s.Country
 }
 
 // SetID sets the value of ID.
@@ -139,9 +139,9 @@ func (s *GetTransactionRequest) SetID(val OptString) {
 	s.ID = val
 }
 
-// SetCurrency sets the value of Currency.
-func (s *GetTransactionRequest) SetCurrency(val OptString) {
-	s.Currency = val
+// SetCountry sets the value of Country.
+func (s *GetTransactionRequest) SetCountry(val OptString) {
+	s.Country = val
 }
 
 // Ref: #/components/schemas/GetTransactionResponse
@@ -152,7 +152,7 @@ type GetTransactionResponse struct {
 	// Amount of the transaction in USD.
 	AmountUSD OptString   `json:"amountUSD"`
 	Date      OptDateTime `json:"date"`
-	// Amount in the requested currency.
+	// Amount in the currency of the specified country.
 	Amount OptString `json:"amount"`
 }
 
