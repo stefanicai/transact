@@ -18,20 +18,15 @@ make test
 make test-coverage
 ```
 
+NOTE: There a configuration file in `config/local.yaml` which is used to configure the application. You can change it as you see fit.
 
 ### 3. Docker image for deployment
 Docker image is in `Dockerfile` file. We build with a golang image, then build the "production" image from a distroless image.
 
+There is a `docker-compose.yaml` file as well, which will start mongo and our application, running on port 8080.
+
 ### 4. Kubernetes deployment files
 Created a draft of a kubernetes deployment. The configuration file for the specific environment are passed in to the container as config maps.
-
-## To do for a production deliverable
-- implement OTEL
-- wrap errors in handler so internal errors don't go through to the client. Only validation errors should generally go through for security reasons.
-- a few more tests, I didn't cover quite all the cases
-- fix the issue with big.Rat and MangoDB
-- use the context - I haven't used it at all really. E.g. I don't pass the context to the http call, so if context gets cancelled by the client, the request still goes through.
-- continuous integration, depending on what's used - e.g. github workflows if hosted on github
 
 ## How to run
 The application can be run in a few ways.
@@ -85,3 +80,14 @@ curl --request GET \
 	"country": "Australia"
 }'
 ```
+
+## To do for a production deliverable
+- implement OTEL
+- add graceful shutdown to the server
+- restrict CORS
+- wrap errors in handler so internal errors don't go through to the client. Only validation errors should generally go through for security reasons.
+- Add better handling of http return error status codes - it's pretty basic now
+- a few more tests, I didn't cover quite all the cases
+- fix the issue with big.Rat and MangoDB
+- use the context - I haven't used it at all really. E.g. I don't pass the context to the http call, so if context gets cancelled by the client, the request still goes through.
+- continuous integration, depending on what's used - e.g. github workflows if hosted on github
