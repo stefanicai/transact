@@ -40,7 +40,7 @@ func ToModelTransaction(req *api.CreateTransactionRequest) (*model.Transaction, 
 
 	return &model.Transaction{
 		Description: req.Description.Value,
-		AmountInUSD: *r,
+		AmountInUSD: r,
 		Date:        *date,
 	}, nil
 }

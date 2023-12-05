@@ -49,7 +49,7 @@ func (t *service) Get(ctx context.Context, req *api.GetTransactionRequest) (*api
 		return nil, err
 	}
 
-	amountInCurrency, err := t.forexService.Convert(req.Country.Value, tr.AmountInUSD)
+	amountInCurrency, err := t.forexService.Convert(req.Country.Value, *tr.AmountInUSD)
 	if err != nil {
 		return nil, err
 	}

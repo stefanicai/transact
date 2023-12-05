@@ -61,7 +61,6 @@ Sample (working) Store call:
 curl --request POST \
   --url http://127.0.0.1:8080/create \
   --header 'Content-Type: application/json' \
-  --header 'User-Agent: insomnia/8.4.5' \
   --data '{
 	"description": "A transaction",
 	"amount": "10.3",
@@ -74,7 +73,6 @@ Sample (working) Get call below. Just replace the ID sent with the one in the re
 curl --request GET \
   --url http://127.0.0.1:8080/get \
   --header 'Content-Type: application/json' \
-  --header 'User-Agent: insomnia/8.4.5' \
   --data '{
 	"id":"5c545996-6417-440b-a3a2-51d5c9d220b2",
 	"country": "Australia"
@@ -88,6 +86,6 @@ curl --request GET \
 - wrap errors in handler so internal errors don't go through to the client. Only validation errors should generally go through for security reasons.
 - Add better handling of http return error status codes - it's pretty basic now
 - a few more tests, I didn't cover quite all the cases
-- fix the issue with big.Rat and MangoDB
+- fix the issue with big.Rat and MongoDB. It seems the issue is not a json marshalling issue (that works ok for pointer fields), but a Mongo specific, might need more reading, potentially changing the type used for holding currency.
 - use the context - I haven't used it at all really. E.g. I don't pass the context to the http call, so if context gets cancelled by the client, the request still goes through.
 - continuous integration, depending on what's used - e.g. github workflows if hosted on github

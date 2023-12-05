@@ -9,5 +9,5 @@ type Transaction struct {
 	ID          string
 	Description string
 	Date        time.Time
-	AmountInUSD big.Rat
+	AmountInUSD *big.Rat
 }
