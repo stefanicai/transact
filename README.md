@@ -26,7 +26,7 @@ Docker image is in `Dockerfile` file. We build with a golang image, then build t
 There is a `docker-compose.yaml` file as well, which will start mongo and our application, running on port 8080.
 
 ### 4. Kubernetes deployment files
-Created a draft of a kubernetes deployment. The configuration file for the specific environment are passed in to the container as config maps.
+Created a draft of a kubernetes deployment helm charts, in `deployment/helm`. The configuration file for the specific environment are passed in to the container as config maps.
 
 ## How to run
 The application can be run in a few ways.
