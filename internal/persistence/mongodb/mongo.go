@@ -1,4 +1,4 @@
-package mongo
+package mongodb
 
 import (
 	"context"
@@ -32,8 +32,7 @@ func (t *transactionDao) Store(ctx context.Context, tr *model.Transaction) error
 
 func (t *transactionDao) Get(ctx context.Context, ID string) (*model.Transaction, error) {
 	var result model.Transaction
-	tc := t.client.Database("test").Collection("transact")
-	err := tc.FindOne(ctx, bson.D{{idKey, ID}}).Decode(&result)
+	err := t.collection().FindOne(ctx, bson.D{{idKey, ID}}).Decode(&result)
 	if err != nil {
 		slog.Info("transaction not found", "id", ID, "error", err)
 		return nil, err
@@ -42,18 +41,17 @@ func (t *transactionDao) Get(ctx context.Context, ID string) (*model.Transaction
 	return &result, nil
 }
 
-func MakeTransactionDao(cfg Config) (persistence.TransactionDao, error) {
-	client, err := createClient(cfg)
-	if err != nil {
-		return nil, err
-	}
+func (t *transactionDao) collection() *mongo.Collection {
+	return t.client.Database("test").Collection("transact")
+}
 
+func MakeTransactionDao(client *mongo.Client) (persistence.TransactionDao, error) {
 	return &transactionDao{
 		client: client,
 	}, nil
 }
 
-func createClient(cfg Config) (*mongo.Client, error) {
+func CreateMongoClient(ctx context.Context, cfg Config) (*mongo.Client, error) {
 	slog.Debug("creating Mongo DB client", "url", cfg.URL)
 	var cred options.Credential
 
@@ -63,13 +61,13 @@ func createClient(cfg Config) (*mongo.Client, error) {
 
 	// set client options
 	clientOptions := options.Client().ApplyURI(cfg.URL).SetAuth(cred)
-	client, err := mongo.Connect(context.TODO(), clientOptions)
+	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
 		return nil, err
 	}
 
 	// Check the connection
-	err = client.Ping(context.TODO(), nil)
+	err = client.Ping(ctx, nil)
 	if err != nil {
 		return nil, err
 	}

@@ -3,11 +3,12 @@ package handler
 import (
 	"context"
 	"github.com/stefanicai/transact/internal/api"
+	"github.com/stefanicai/transact/internal/client"
 	"github.com/stefanicai/transact/internal/config"
 	"github.com/stefanicai/transact/internal/forex"
 	"github.com/stefanicai/transact/internal/persistence"
 	"github.com/stefanicai/transact/internal/persistence/inmem"
-	"github.com/stefanicai/transact/internal/persistence/mongo"
+	"github.com/stefanicai/transact/internal/persistence/mongodb"
 	"github.com/stefanicai/transact/internal/transaction"
 	"log/slog"
 )
@@ -50,13 +51,13 @@ func (t *transactionHandler) NewError(ctx context.Context, err error) *api.Error
 	}
 }
 
-func NewTransactionService(cfg config.Config) (api.Handler, error) {
+func NewTransactionService(ctx context.Context, cfg config.Config, clients client.Clients) (api.Handler, error) {
 	var dao *persistence.TransactionDao
 	if cfg.Mongo.UseMock {
 		inmemDao := inmem.MakeTransactionDao()
 		dao = &inmemDao
 	} else {
-		mongoDao, err := mongo.MakeTransactionDao(cfg.Mongo)
+		mongoDao, err := mongodb.MakeTransactionDao(clients.GetMongo())
 		if err != nil {
 			return nil, err
 		}

@@ -1,4 +1,4 @@
-package mongo
+package mongodb
 
 type Config struct {
 	URL      string `yaml:"url"`

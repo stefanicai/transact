@@ -1,7 +1,7 @@
 forex:
   treasuryURL: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/rates_of_exchange
 mongo:
-  useMock: true # flip this to use mongo
+  useMock: false # flip this to use mongo
   url: mongodb://localhost:27017
   username: admin
   password: admin

@@ -21,21 +21,21 @@ services:
     depends_on:
       - mongo
 
-  transact-app:
-    build: ./
-    image: transact-app
-    command: -configFile /config/local.yaml
-    environment:
-      - MONGODB_URL=mongodb://mongodb:27017/test
-    ports:
-      - '8080:8080'
-    depends_on:
-      - mongo
-    volumes:
-      - .:/src
-      - ./config/local.yaml:/config/local.yaml
-    networks:
-      - transact-network
+#  transact-app:
+#    build: ./
+#    image: transact-app
+#    command: -configFile /config/local.yaml
+#    environment:
+#      - MONGODB_URL=mongodb://mongodb:27017/test
+#    ports:
+#      - '8080:8080'
+#    depends_on:
+#      - mongo
+#    volumes:
+#      - .:/src
+#      - ./config/local.yaml:/config/local.yaml
+#    networks:
+#      - transact-network
 
 networks:
   transact-network:

@@ -1,6 +1,7 @@
 package treasury
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -22,7 +23,7 @@ const (
 )
 
 type Client interface {
-	GetRate(country string, effectiveDate time.Time) (*Rate, error)
+	GetRate(ctx context.Context, country string, effectiveDate time.Time) (*Rate, error)
 }
 
 // Rate is an exchange rate record at a specific time
@@ -41,7 +42,7 @@ type client struct {
 }
 
 // GetRate loads the latest rate in the last 6 months. Error if we can't find one.
-func (c *client) GetRate(country string, rateDate time.Time) (*Rate, error) {
+func (c *client) GetRate(ctx context.Context, country string, rateDate time.Time) (*Rate, error) {
 	// find the oldest date accepted
 	startDate := rateDate.AddDate(0, -rateNotOlderThanMonths, 0)
 	formattedStartDate := startDate.Format(dateFormat)
@@ -49,7 +50,12 @@ func (c *client) GetRate(country string, rateDate time.Time) (*Rate, error) {
 	formattedDate := rateDate.Format(dateFormat)
 
 	url := fmt.Sprintf(queryStringFormat, c.baseURL, formattedStartDate, formattedDate, country)
-	response, err := http.Get(url)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	if err != nil {
+		return nil, err
+	}
+	client := &http.Client{}
+	response, err := client.Do(req)
 	if err != nil {
 		slog.Error("failed to get rates", "date", formattedDate, "country", country, "error", err)
 		return nil, err
